@@ -425,14 +425,14 @@ void DynamicSurface::integrate( double desired_dt, double& actual_dt )
             
             if ( !solver_ok )
             {
-                //if ( m_verbose ) 
+                if ( m_verbose ) 
                 { std::cout << "IIZ" << std::endl; }
                 solver_ok = impactZoneSolver.inelastic_impact_zones( curr_dt );            
             }
             
             if ( !solver_ok )
             {
-                //if ( m_verbose ) 
+                if ( m_verbose ) 
                 { std::cout << "RIZ" << std::endl; }
                 // punt to rigid impact zones
                 solver_ok = impactZoneSolver.rigid_impact_zones( curr_dt );
