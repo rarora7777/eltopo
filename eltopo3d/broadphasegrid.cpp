@@ -72,31 +72,32 @@ void BroadPhaseGrid::build_acceleration_grid( AccelerationGrid& grid,
         xmax[i] += 2*maxdistance + grid_padding;
     }
     
-    Vec3st dims(1,1,1);
     
-    const size_t MAX_D = 2000;
-    
-    if(mag(xmax-xmin) > grid_padding)
-    {
-        for(unsigned int i = 0; i < 3; i++)
-        {
-            size_t d = (size_t)ceil((xmax[i] - xmin[i])/length_scale);
-            
-            if(d < 1) d = 1;
-            
-            if(d > MAX_D) 
-            {
-                //            std::cout << "BroadPhaseGrid::build_acceleration_grid, dimension " << i << ": d = " << n << std::endl;
-                //            std::cout << "xmin: " << xmin << std::endl;
-                //            std::cout << "xmax: " << xmax << std::endl;
-                //            std::cout << "length_scale: " << length_scale << std::endl;
-                d = MAX_D;
-            }
-            
-            dims[i] = d;
-        }
-    }
-    
+    //Vec3st dims(1,1,1);
+    //const size_t MAX_D = 2000;
+    //
+    //if(mag(xmax-xmin) > grid_padding)
+    //{
+    //    for(unsigned int i = 0; i < 3; i++)
+    //    {
+    //        size_t d = (size_t)ceil((xmax[i] - xmin[i])/length_scale);
+    //        
+    //        if(d < 1) d = 1;
+    //        
+    //        if(d > MAX_D) 
+    //        {
+    //            //            std::cout << "BroadPhaseGrid::build_acceleration_grid, dimension " << i << ": d = " << n << std::endl;
+    //            //            std::cout << "xmin: " << xmin << std::endl;
+    //            //            std::cout << "xmax: " << xmax << std::endl;
+    //            //            std::cout << "length_scale: " << length_scale << std::endl;
+    //            d = MAX_D;
+    //        }
+    //        
+    //        dims[i] = d;
+    //    }
+    //}
+    Vec3st dims(100,100,100);
+
     grid.set(dims, xmin, xmax);
     
     // going backwards from n to 0, so hopefully the grid only has to allocate once
