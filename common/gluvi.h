@@ -1,3 +1,4 @@
+#ifndef NO_GUI
 #ifndef GLUVI_H
 #define GLUVI_H
 
@@ -232,3 +233,5 @@ namespace Gluvi{
 } // end of namespace
 
 #endif
+#endif
+

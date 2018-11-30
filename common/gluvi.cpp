@@ -1,4 +1,4 @@
-
+#ifndef NO_GUI
 #include <cmath>
 #include <cstdarg>
 #include <cstdlib>
@@ -1312,3 +1312,4 @@ namespace Gluvi{
     
 }     // namespace Gluvi
 
+#endif
