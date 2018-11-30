@@ -5,17 +5,18 @@ if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release")
 endif()
 
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/../cmake)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../cmake)
 
 add_definitions(-DNO_GUI)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -Wall -Wextra -Wno-reorder -Wno-unknown-pragmas -march=native" )
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+set(LIBELTOPO_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}")
 include_directories(
-  "${PROJECT_SOURCE_DIR}/" # because of use of angle bracket #include
-  "${PROJECT_SOURCE_DIR}/../common"
-  "${PROJECT_SOURCE_DIR}/../common/tunicate"
-  "${PROJECT_SOURCE_DIR}/../common/newsparse"
-  "${PROJECT_SOURCE_DIR}/../common/meshes")
+  "${LIBELTOPO_INCLUDE_DIR}/" # because of use of angle bracket #include
+  "${LIBELTOPO_INCLUDE_DIR}/../common"
+  "${LIBELTOPO_INCLUDE_DIR}/../common/tunicate"
+  "${LIBELTOPO_INCLUDE_DIR}/../common/newsparse"
+  "${LIBELTOPO_INCLUDE_DIR}/../common/meshes")
 
 find_package(BLAS REQUIRED)
 include_directories(${BLAS_INCLUDE_DIR})
@@ -55,5 +56,11 @@ FILE(GLOB SRCFILES
   "../common/*.cpp"
   )
 add_library(${LIBNAME} ${SRCFILES})
+add_library(libeltopo ALIAS ${LIBNAME})
+set_property(TARGET ${LIBNAME} PROPERTY EXPORT_NAME libeltopo)
+target_include_directories(${LIBNAME} SYSTEM INTERFACE 
+  $<BUILD_INTERFACE:${LIBELTOPO_INCLUDE_DIR}>
+  $<INSTALL_INTERFACE:include>
+)
 
-install(TARGETS ${LIBNAME} ARCHIVE DESTINATION ${PROJECT_SOURCE_DIR})
+install(TARGETS ${LIBNAME} ARCHIVE DESTINATION ${CMAKE_CURRENT_LIST_DIR})
