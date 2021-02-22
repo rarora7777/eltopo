@@ -8,7 +8,10 @@ endif()
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../cmake)
 
 add_definitions(-DNO_GUI)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -Wall -Wextra -Wno-reorder -Wno-unknown-pragmas -march=native" )
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -Wall -march=native" )
+if (NOT MSVC)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wextra -Wno-reorder -Wno-unknown-pragmas" )
+endif()
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 set(LIBELTOPO_INCLUDE_DIR "${CMAKE_CURRENT_LIST_DIR}")
 include_directories(
@@ -22,6 +25,8 @@ find_package(BLAS REQUIRED)
 include_directories(${BLAS_INCLUDE_DIR})
 find_package(LAPACK REQUIRED)
 include_directories(${LAPACK_INCLUDE_DIR})
+
+add_compile_definitions("USE_FORTRAN_BLAS")
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   add_definitions(-DUSE_FORTRAN_BLAS)
@@ -37,7 +42,13 @@ else()
   set(LIBNAME "eltopo_debug")
 endif()
 
-
+include (TestBigEndian)
+TEST_BIG_ENDIAN(IS_BIG_ENDIAN)
+if(IS_BIG_ENDIAN)
+  add_compile_definitions("__BIG_ENDIAN__")
+else()
+  add_compile_definitions("__LITTLE_ENDIAN__")
+endif()
 
 # We need C++11. Put this directive after CGAL's include.
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
